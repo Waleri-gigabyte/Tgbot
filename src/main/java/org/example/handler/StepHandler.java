@@ -648,10 +648,10 @@ public class StepHandler {
             UserSession session
     ) {
 
-        session.setStep(Step.RESULT);
+        session.setStep(Step.CONFIRM_CALCULATION);
 
         String result =
-                "Расчёт заполнен:\n\n"
+                "Пожалуйста, проверьте данные:\n\n"
                         + "Направление: "
                         + session.getSourceLanguage()
                         + " → "
@@ -676,9 +676,15 @@ public class StepHandler {
                         + session.getApostilleType()
                         + "\n"
                         + "Легализация: "
-                        + (session.isLegalization() ? "Да" : "Нет");
+                        + (session.isLegalization() ? "Да" : "Нет")
+                        + "\n"
+                        + "Всё ли верно указано?";
 
-        messageSender.sendMessage(chatId, result);
+        messageSender.sendMessageWithKeyboard(
+                chatId,
+                result,
+                keyboardFactory.createYesNoKeyboard()
+        );
     }
 
     private void handleResult(

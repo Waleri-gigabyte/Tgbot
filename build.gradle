@@ -1,5 +1,11 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'com.gradleup.shadow' version '9.6.1'
+}
+
+application {
+    mainClass = 'org.example.Main'
 }
 
 group = 'org.example'
@@ -7,6 +13,14 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.example.Main'
+        )
+    }
 }
 
 dependencies {
