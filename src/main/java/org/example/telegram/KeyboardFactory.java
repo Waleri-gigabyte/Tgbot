@@ -1,7 +1,10 @@
 package org.example.telegram;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -189,5 +192,38 @@ public class KeyboardFactory {
         keyboard.setResizeKeyboard(true);
 
         return keyboard;
+    }
+
+    public ReplyKeyboardMarkup createConfirmationKeyboard() {
+
+        KeyboardRow firstRow = new KeyboardRow();
+        firstRow.add("✅ Да");
+
+        KeyboardRow secondRow = new KeyboardRow();
+        secondRow.add("❌ Начать заново");
+
+        return ReplyKeyboardMarkup.builder()
+                .keyboard(List.of(firstRow, secondRow))
+                .resizeKeyboard(true)
+                .build();
+    }
+
+    public InlineKeyboardMarkup createResultKeyboard() {
+
+        InlineKeyboardButton managerButton = InlineKeyboardButton.builder()
+                .text("[ \uD83D\uDCAC Чат с менеджером ↗ ]")
+                .url("https://t.me/Amalteaplus")
+                .build();
+
+
+        InlineKeyboardRow managerRow = new InlineKeyboardRow();
+        managerRow.add(managerButton);
+
+
+        return InlineKeyboardMarkup.builder()
+                .keyboard(List.of(
+                        managerRow
+                ))
+                .build();
     }
 }

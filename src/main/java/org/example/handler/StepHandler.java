@@ -76,6 +76,9 @@ public class StepHandler {
             case CHOOSE_LEGALIZATION_URGENCY ->
                     handleLegalizationUrgency(chatId, text, session);
 
+            case CONFIRM_CALCULATION ->
+                    handleConfirmCalculation(chatId, text, session);
+
             case RESULT ->
                     handleResult(chatId, text, session);
 
@@ -683,7 +686,30 @@ public class StepHandler {
         messageSender.sendMessageWithKeyboard(
                 chatId,
                 result,
-                keyboardFactory.createYesNoKeyboard()
+                keyboardFactory.createConfirmationKeyboard()
+        );
+    }
+
+    private void handleConfirmCalculation(
+            Long chatId,
+            String text,
+            UserSession session
+    ) {
+
+        if (text.equals("✅ Да")) {
+            handleResult(chatId, text, session);
+            return;
+        }
+
+        if (text.equals("❌ Начать заново")) {
+            handleStart(chatId);
+            return;
+        }
+
+        messageSender.sendMessageWithKeyboard(
+                chatId,
+                "Пожалуйста, выберите один из вариантов.",
+                keyboardFactory.createConfirmationKeyboard()
         );
     }
 
@@ -692,6 +718,14 @@ public class StepHandler {
             String text,
             UserSession session
     ) {
+
+        if (text.equals("📞 Свяжитесь с нами")) {
+            messageSender.sendMessage(
+                    chatId,
+                    "Для уточнения стоимости и оформления заказа свяжитесь с нашим менеджером."
+            );
+            return;
+        }
 
         if (text.equals("❌ Начать заново")) {
             handleStart(chatId);
@@ -744,9 +778,16 @@ public class StepHandler {
 
                         + "Итого: "
                         + calculationResult.getTotalPrice()
-                        + " руб.";
+                        + " руб.\n\n"
 
-        messageSender.sendMessage(chatId, result);
+                        + "⚠️ Обратите внимание: расчёт является ориентировочным. "
+                        + "Для уточнения итоговой стоимости свяжитесь с менеджером.";
+
+        messageSender.sendMessageWithInlineKeyboard(
+                chatId,
+                result,
+                keyboardFactory.createResultKeyboard()
+        );
     }
 
 }
