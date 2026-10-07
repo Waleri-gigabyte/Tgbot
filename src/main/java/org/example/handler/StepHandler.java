@@ -103,7 +103,46 @@ public class StepHandler {
     }
 
     public void handleHelp(Long chatId) {
-        messageSender.sendMessage(chatId, "Помощь");
+        String helpText =
+                "📖 Как пользоваться ботом\n\n"
+
+                        + "Бот поможет рассчитать ориентировочную стоимость перевода "
+                        + "и дополнительных услуг.\n\n"
+
+                        + "1. Выберите направление перевода.\n"
+                        + "Если нужного направления нет среди предложенных вариантов, "
+                        + "нажмите «🔎 Найти язык».\n\n"
+
+                        + "Язык можно указать:\n"
+                        + "• на русском — английский, польский, немецкий;\n"
+                        + "• на английском — English, Polish, German;\n"
+                        + "• сокращением из 2 букв — EN, PL, DE, UK и т. д.\n\n"
+
+                        + "2. Выберите тип документа.\n\n"
+
+                        + "3. Укажите количество страниц.\n\n"
+
+                        + "4. Выберите обычный или срочный перевод.\n\n"
+
+                        + "5. При необходимости добавьте дополнительные услуги:\n"
+                        + "• удостоверение подписи переводчика;\n"
+                        + "• нотариальное заверение копии;\n"
+                        + "• апостиль;\n"
+                        + "• легализацию.\n\n"
+
+                        + "6. Проверьте введённые данные и подтвердите расчёт.\n\n"
+
+                        + "⚠️ Обратите внимание: расчёт является ориентировочным. "
+                        + "Для уточнения итоговой стоимости свяжитесь с менеджером.\n\n"
+
+                        + "Если при использовании бота возникли трудности или "
+                        + "вы не нашли нужную услугу, вы всегда можете обратиться к менеджеру.";
+
+        messageSender.sendMessageWithInlineKeyboard(
+                chatId,
+                helpText,
+                keyboardFactory.createManagerKeyboard()
+        );
     }
 
     private void handleLanguageSearch(
@@ -786,7 +825,7 @@ public class StepHandler {
         messageSender.sendMessageWithInlineKeyboard(
                 chatId,
                 result,
-                keyboardFactory.createResultKeyboard()
+                keyboardFactory.createManagerKeyboard()
         );
     }
 

@@ -208,7 +208,7 @@ public class KeyboardFactory {
                 .build();
     }
 
-    public InlineKeyboardMarkup createResultKeyboard() {
+    public InlineKeyboardMarkup createManagerKeyboard() {
 
         InlineKeyboardButton managerButton = InlineKeyboardButton.builder()
                 .text("[ \uD83D\uDCAC Чат с менеджером ↗ ]")

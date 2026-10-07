@@ -16,7 +16,7 @@ public class BotHandler {
     public void handle(Long chatId, String text) {
 
         switch (text) {
-            case "/start" -> stepHandler.handleStart(chatId);
+            case "/start", "❌ Начать заново" -> stepHandler.handleStart(chatId);
             case "/help" -> stepHandler.handleHelp(chatId);
             default -> stepHandler.handleCurrentStep(chatId, text);
         }
