@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.handler.BotHandler;
+import org.example.repository.AnalyticsRepository;
 import org.example.repository.PriceRepository;
 import org.example.service.CalculationService;
 import org.example.session.SessionStorage;
@@ -33,7 +34,9 @@ public class SimpleBot implements LongPollingSingleThreadUpdateConsumer {
         DatabaseConnection databaseConnection = new DatabaseConnection();
 
         PriceRepository priceRepository = new PriceRepository(databaseConnection);
+        AnalyticsRepository analyticsRepository = new AnalyticsRepository(databaseConnection);
         CalculationService calculationService = new CalculationService(priceRepository);
+
 
         StepHandler stepHandler =
                 new StepHandler(
@@ -41,7 +44,8 @@ public class SimpleBot implements LongPollingSingleThreadUpdateConsumer {
                         languageService,
                         messageSender,
                         keyboardFactory,
-                        calculationService
+                        calculationService,
+                        analyticsRepository
                 );
 
         this.botHandler =

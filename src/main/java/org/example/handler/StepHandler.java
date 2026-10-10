@@ -8,6 +8,9 @@ import org.example.session.Step;
 import org.example.session.UserSession;
 import org.example.telegram.KeyboardFactory;
 import org.example.telegram.MessageSender;
+import java.util.UUID;
+
+import org.example.repository.AnalyticsRepository;
 
 public class StepHandler {
 
@@ -17,19 +20,22 @@ public class StepHandler {
     private final MessageSender messageSender;
     private final KeyboardFactory keyboardFactory;
     private final CalculationService calculationService;
+    private final AnalyticsRepository analyticsRepository;
 
     public StepHandler(
             SessionStorage sessionStorage,
             LanguageService languageService,
             MessageSender messageSender,
             KeyboardFactory keyboardFactory,
-            CalculationService calculationService
+            CalculationService calculationService,
+            AnalyticsRepository analyticsRepository
     ) {
         this.sessionStorage = sessionStorage;
         this.languageService = languageService;
         this.messageSender = messageSender;
         this.keyboardFactory = keyboardFactory;
         this.calculationService = calculationService;
+        this.analyticsRepository = analyticsRepository;
     }
 
     //------------
@@ -37,6 +43,12 @@ public class StepHandler {
     public void handleCurrentStep(Long chatId, String text) {
 
         UserSession session = sessionStorage.getSession(chatId);
+
+        analyticsRepository.saveEvent(
+                session.getCalculationId(),
+                chatId,
+                session.getStep().name()
+        );
 
         switch (session.getStep()) {
 
@@ -93,6 +105,16 @@ public class StepHandler {
 
         UserSession session = sessionStorage.getSession(chatId);
         session.setStep(Step.CHOOSE_DIRECTION);
+
+        session.setCalculationId(
+                UUID.randomUUID().toString()
+        );
+
+        analyticsRepository.saveEvent(
+                session.getCalculationId(),
+                chatId,
+                "STARTED"
+        );
 
         messageSender.sendMessageWithKeyboard(
                 chatId,
@@ -775,6 +797,12 @@ public class StepHandler {
 
         CalculationResult calculationResult =
                 calculationService.calculate(session);
+
+        analyticsRepository.saveEvent(
+                session.getCalculationId(),
+                chatId,
+                "COMPLETED"
+        );
 
         String result =
                 "Расчёт стоимости:\n\n"

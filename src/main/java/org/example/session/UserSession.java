@@ -22,6 +22,8 @@ public class UserSession {
     private String legalizationDocumentType;
     private boolean urgentLegalization;
 
+    private String calculationId;
+
     public Step getStep() {
         return step;
     }
@@ -117,4 +119,13 @@ public class UserSession {
     public void setUrgentLegalization(boolean urgentLegalization) {
         this.urgentLegalization = urgentLegalization;
     }
+
+    public String getCalculationId() {
+        return calculationId;
+    }
+
+    public void setCalculationId(String calculationId) {
+        this.calculationId = calculationId;
+    }
+
 }

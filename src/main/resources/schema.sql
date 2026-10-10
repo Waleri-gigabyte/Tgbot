@@ -245,3 +245,16 @@ VALUES
 )
 DO UPDATE SET
     price_per_page = excluded.price_per_page;
+
+CREATE TABLE IF NOT EXISTS analytics_events (
+             id INTEGER PRIMARY KEY AUTOINCREMENT,
+             calculation_id TEXT NOT NULL,
+             chat_id INTEGER NOT NULL,
+             step TEXT NOT NULL,
+             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE (
+             calculation_id,
+             step
+)
+    );
